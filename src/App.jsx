@@ -1,11 +1,11 @@
 import Navbar from "./components/common/Navbar";
-import Login from "./components/auth/Login";
+import Layout from "./components/auth/Layout";
 
 function App() {
   return (
     <>
       <Navbar />
-      <Login />
+      <Layout />
     </>
   );
 }
