@@ -3,6 +3,7 @@ import MailOutlinedIcon from '@mui/icons-material/MailOutlined';
 import PasswordOutlinedIcon from '@mui/icons-material/PasswordOutlined';
 import InputField from "./InputField";
 import { useState } from "react";
+import { emailRegex } from "../../utils/validatorConstants";
 import { loginUser, getUserProfile } from "../../services/loginService";
 
 const Login = () => {
@@ -15,7 +16,6 @@ const Login = () => {
   const [error, setError] = useState(null);
 
   function isValidEmail(email) {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     emailRegex.test(email) ? setIsValid(true) : setIsValid(false);
   }
 
