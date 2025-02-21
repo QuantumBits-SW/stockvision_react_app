@@ -7,6 +7,8 @@ import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
 import { useState, useMemo } from 'react';
 import { emailRegex, passwordRegex } from "../../utils/validatorConstants";
 import { Button } from "@mui/material";
+import { signupUser, getUserProfile } from "../../services/loginService";
+
 
 const Register = () => {
   const [registerData, setRegisterData] = useState({
@@ -66,16 +68,29 @@ const Register = () => {
       confirmPassword: registerData.password === value
     })) : null
   }
+
+  const handleSignup = async (e) => 
+  {
+    e.preventDefault();
+    try {
+          const token = await signupUser(registerData.email, registerData.password);
+          const userData = await getUserProfile(token, {...registerData, "isNewUser": true});
+          console.log("User Data:", userData);
+        } catch (err) {
+          console.error("Error during Sign up process:", err);
+        }
+  }
  
   return ( 
     <div className="flex flex-col justify-center animate-slideInFromRight overflow-hidden animate-slideInFromLeft">
-    <form className="overflow-scroll">
+    <form className="overflow-scroll" onSubmit = {handleSignup}>
         <InputField autoComplete="off" label="First Name" Icon={PersonPinOutlinedIcon} onChange={onChange}/>
         <InputField autoComplete="off" label="Last Name" Icon={Groups3OutlinedIcon} onChange={onChange}/>
         <InputField autoComplete="email" label="Email Address" Icon={MailOutlinedIcon} onChange={onChange} checked={validEntryStatus.email}/>
         <InputField autoComplete="password" label="Password" Icon={PasswordOutlinedIcon} onChange={onChange} checked={validEntryStatus.password}/>
         <InputField autoComplete="off" label="Confirm Password" Icon={KeyOutlinedIcon} onChange={onChange} checked={validEntryStatus.confirmPassword}/>
         <Button
+          type = "submit"
           variant="contained"
           className={`!rounded-[30px] w-full !mt-2 !p-2 text-white cursor-pointer ${isValid && "!bg-black"}`}
           disabled={!(isValid)}

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_ENDPOINTS } from '../api/endpoints';
-import { signInWithEmailAndPassword , signInWithPopup , getAdditionalUserInfo} from 'firebase/auth';
+import { signInWithEmailAndPassword , signInWithPopup , getAdditionalUserInfo , createUserWithEmailAndPassword} from 'firebase/auth';
 import { firebaseAuth , googleAuthProvider } from './firebase';
 
 export const loginUser = async (email, password) => {
@@ -10,6 +10,17 @@ export const loginUser = async (email, password) => {
       return token; 
     } catch (error) {
       console.error("Firebase Login Error:", error);
+      throw error;
+    }
+  };
+
+  export const signupUser = async(email, password) =>{
+    try {
+      const response = await createUserWithEmailAndPassword(firebaseAuth, email, password);
+      const token = await response.user.getIdToken();
+      return token; 
+    } catch (error) {
+      console.error("Firebase Signup Error:", error);
       throw error;
     }
   };
