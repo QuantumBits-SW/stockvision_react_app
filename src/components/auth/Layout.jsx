@@ -8,6 +8,8 @@ import Register from "./Register";
 import ResetPass from "./ResetPass";
 import { useState } from "react";
 import { Google } from "@mui/icons-material";
+import { loginWithGoogle } from "../../services/loginService";
+
 
 const Layout = () => {
   const authPopper = useSelector((state) => state.popper.authPopper);
@@ -18,6 +20,14 @@ const Layout = () => {
   })
   const dispatch = useDispatch();
 
+  const handleLoginWithGoogle = async()=>{
+    try {
+    const userData = await loginWithGoogle();
+    console.log(userData);
+  } catch (err) {
+    console.error("Error during login with google process:", err);
+  }
+  }
   return (
     authPopper === 1 &&
     <div className="absolute flex items-center justify-center z-[999] top-0 backdrop-blur-xs  w-screen h-screen bg-black/20">
@@ -66,7 +76,7 @@ const Layout = () => {
               </div>
             </div>
             <div className="flex gap-4 justify-center mt-2">
-              <IconButton className="border border-gray-300 rounded-lg p-3">
+              <IconButton className="border border-gray-300 rounded-lg p-3" onClick={handleLoginWithGoogle}>
                 <Google className="text-gray-600" />
               </IconButton>
             </div>
