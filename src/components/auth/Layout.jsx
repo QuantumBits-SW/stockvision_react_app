@@ -13,11 +13,12 @@ import { loginWithGoogle } from "../../services/loginService";
 
 const Layout = () => {
   const authPopper = useSelector((state) => state.popper.authPopper);
-  const [authState, setAuthState] = useState({
+  const initialState = {
     login: 1,
     register: 0,
     forgetPass: 0
-  })
+  }
+  const [authState, setAuthState] = useState(initialState)
   const dispatch = useDispatch();
 
   const handleLoginWithGoogle = async()=>{
@@ -31,8 +32,8 @@ const Layout = () => {
   return (
     authPopper === 1 &&
     <div className="absolute flex items-center justify-center z-[999] top-0 backdrop-blur-xs  w-screen h-screen bg-black/20">
-      <div className="flex justify-start flex-row w-[90vw] md:w-[70vw] lg:w-[60vw] h-[60vh] bg-white rounded-3xl overflow-hidden">
-        <div id="left" className="w-[100%] md:w-[50%] p-5 flex flex-col justify-center gap-8 ">
+      <div className="flex justify-start flex-row w-[90vw] md:w-[70vw] lg:w-[60vw] sm:h-[90vh] md:h-[85vh] md:h-[80vh] max-h-[800px] bg-white rounded-3xl overflow-hidden">
+        <div id="left" className="w-[100%] md:w-[50%] p-5 flex flex-col justify-center gap-6 md:gap-4">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-900">
               Hi there 👋 
@@ -66,7 +67,7 @@ const Layout = () => {
             authState.register === 1 ? <Register /> :
             authState.forgetPass === 1 ? <ResetPass /> : null
           }
-          <div>
+          <div className="">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-300"></div>
@@ -83,7 +84,10 @@ const Layout = () => {
           </div>
         </div>
         <div id="right" className="relative">
-          <Button onClick={() => dispatch(closeAuth())} sx={{
+          <Button onClick={() => {
+            resetState()
+            dispatch(closeAuth())
+          }} sx={{
             display: 'inline',
             position: 'absolute',
             top: '10px',
@@ -100,7 +104,7 @@ const Layout = () => {
           }}>
             <CloseIcon fontSize="medium"/>
           </Button> 
-          <img src={rightImg} className="hidden md:block md:w-[35vw] w-[25vw] h-full object-cover"/>
+          <img src={rightImg} className="hidden md:block w-[35vw] md:w-[35vw] h-full object-cover"/>
         </div>
       </div>
     </div>
