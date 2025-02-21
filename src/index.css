@@ -1,1 +1,27 @@
 @import "tailwindcss";
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%); /* Start off-screen to the right */
+  }
+  100% {
+    transform: translateX(0); /* End at normal position */
+  }
+}
+
+.animate-slideInFromRight {
+  animation: slideInFromRight 1s ease-in-out forwards;
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%); /* Start off-screen to the left */
+  }
+  100% {
+    transform: translateX(0); /* End at normal position */
+  }
+}
+
+.animate-slideInFromLeft {
+  animation: slideInFromLeft 1s ease-in-out forwards;
+}
