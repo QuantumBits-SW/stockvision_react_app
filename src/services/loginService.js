@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { API_ENDPOINTS } from '../api/endpoints';
-import { signInWithEmailAndPassword , signInWithPopup , getAdditionalUserInfo , createUserWithEmailAndPassword} from 'firebase/auth';
-import { firebaseAuth , googleAuthProvider } from './firebase';
+import { signInWithEmailAndPassword , signInWithPopup , getAdditionalUserInfo} from 'firebase/auth';
+import { firebaseAuth , googleAuthProvider } from '../../firebase';
 
 export const loginUser = async (email, password) => {
     try {

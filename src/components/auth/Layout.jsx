@@ -21,6 +21,10 @@ const Layout = () => {
   const [authState, setAuthState] = useState(initialState)
   const dispatch = useDispatch();
 
+  const resetState = () => {
+    setAuthState(initialState)
+  }
+
   const handleLoginWithGoogle = async()=>{
     try {
     const userData = await loginWithGoogle();
@@ -32,8 +36,8 @@ const Layout = () => {
   return (
     authPopper === 1 &&
     <div className="absolute flex items-center justify-center z-[999] top-0 backdrop-blur-xs  w-screen h-screen bg-black/20">
-      <div className="flex justify-start flex-row w-[90vw] md:w-[70vw] lg:w-[60vw] sm:h-[90vh] md:h-[85vh] md:h-[80vh] max-h-[800px] bg-white rounded-3xl overflow-hidden">
-        <div id="left" className="w-[100%] md:w-[50%] p-5 flex flex-col justify-center gap-6 md:gap-4">
+      <div className="flex justify-start flex-row w-[90vw] md:w-[90vw] lg:w-[70vw] h-fit max-h-[800px] bg-white rounded-3xl overflow-hidden">
+        <div id="left" className={`flex-1 w-auto p-5 flex flex-col justify-center gap-6 md:gap-4`} >
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-900">
               Hi there 👋 
@@ -67,7 +71,7 @@ const Layout = () => {
             authState.register === 1 ? <Register /> :
             authState.forgetPass === 1 ? <ResetPass /> : null
           }
-          <div className="">
+          <div className="h-[10%]">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-300"></div>
@@ -83,7 +87,7 @@ const Layout = () => {
             </div>
           </div>
         </div>
-        <div id="right" className="relative">
+        <div id="right" className="md:flex-1 relative flex w-auto items-center">
           <Button onClick={() => {
             resetState()
             dispatch(closeAuth())
@@ -104,7 +108,7 @@ const Layout = () => {
           }}>
             <CloseIcon fontSize="medium"/>
           </Button> 
-          <img src={rightImg} className="hidden md:block w-[35vw] md:w-[35vw] h-full object-cover"/>
+          <img src={rightImg} className="hidden md:block h-full object-cover"/>
         </div>
       </div>
     </div>

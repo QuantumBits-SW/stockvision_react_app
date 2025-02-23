@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import MailOutlinedIcon from '@mui/icons-material/MailOutlined';
 import PasswordOutlinedIcon from '@mui/icons-material/PasswordOutlined';
 import InputField from "./InputField";
@@ -45,6 +45,9 @@ const Login = () => {
         <InputField autoComplete="email" label="Email Address" Icon={MailOutlinedIcon} onChange={onChange} checked={isValid}/>
         <InputField autoComplete="password" label="Password" Icon={PasswordOutlinedIcon} onChange={onChange}/>
         {error && <p className="text-center text-red-500">{error}</p>}
+        <Button className="!block !normal-case !mt-[-10px] !underline !w-fit !text-center">
+          reset password
+        </Button>
         <Button
           type="submit"
           variant="contained"
