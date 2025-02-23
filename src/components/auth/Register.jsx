@@ -4,13 +4,16 @@ import PasswordOutlinedIcon from '@mui/icons-material/PasswordOutlined';
 import PersonPinOutlinedIcon from '@mui/icons-material/PersonPinOutlined';
 import Groups3OutlinedIcon from '@mui/icons-material/Groups3Outlined';
 import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { emailRegex, passwordRegex } from "../../utils/validatorConstants";
 import { Button } from "@mui/material";
 import { signupUser, getUserProfile } from "../../services/loginService";
 
 
 const Register = () => {
+  // confirm password ref
+  const ref = useRef(null);
+
   const [registerData, setRegisterData] = useState({
     firstName: '',
     lastName: '',
@@ -20,6 +23,8 @@ const Register = () => {
   })
 
   const [validEntryStatus, setValidEntryStatus] = useState({
+    firstName: false,
+    lastName: false,
     password: false,
     confirmPassword: false,
     email: false
@@ -35,25 +40,34 @@ const Register = () => {
     name === "Email Address" ? setRegisterData((registerData) => ({
       ...registerData,
       email: value
-    })) : name === "First Name" ? setRegisterData((registerData) => ({
+    })) : name === "Name" ? setRegisterData((registerData) => ({
       ...registerData,
       firstName: value
-    })) : name === "Last Name" ? setRegisterData((registerData) => ({
+    })) : name === "Surname" ? setRegisterData((registerData) => ({
       ...registerData,
       lastName: value
-    })) : name === "Password" ? setRegisterData((registerData) => ({
+    })) : name === "Password" ? function(){
+        ref.current.querySelector("input").value = ''
+        setRegisterData((registerData) => ({
+        ...registerData,
+        password: value,
+        confirmPassword: ''
+      }))}() : name === "Confirm Password" ? setRegisterData((registerData) => ({
       ...registerData,
-      password: value
-    })) : name === "Confirm Password" ? setRegisterData((registerData) => ({
-      ...registerData,
-      confirmPasswordassword: value
+      confirmPassword: value
     })) : null
 
     updateValidations(name, value);
   }
 
   const updateValidations = (name, value) => {
-    name === "Email Address" ? function(){
+    name === "Name" ? setValidEntryStatus((validEntryStatus) => ({
+      ...validEntryStatus,
+      firstName: value.length >= 2 
+    })) : name === "Surname" ? setValidEntryStatus((validEntryStatus) => ({
+      ...validEntryStatus,
+      lastName: value.length >= 2 
+    })) : name === "Email Address" ? function(){
       const status = emailRegex.test(value)
       setValidEntryStatus((validEntryStatus) => ({
       ...validEntryStatus,
@@ -62,10 +76,11 @@ const Register = () => {
       const status = passwordRegex.test(value)
       setValidEntryStatus((validEntryStatus) => ({
       ...validEntryStatus,
-      password: status 
+      password: status,
+      confirmPassword: false
     }))}() : name === "Confirm Password" ? setValidEntryStatus((validEntryStatus) => ({
       ...validEntryStatus,
-      confirmPassword: registerData.password === value
+      confirmPassword: value !== '' && registerData.password === value
     })) : null
   }
 
@@ -83,12 +98,14 @@ const Register = () => {
  
   return ( 
     <div className="flex flex-col justify-center animate-slideInFromRight overflow-hidden animate-slideInFromLeft">
-    <form className="overflow-scroll" onSubmit = {handleSignup}>
-        <InputField autoComplete="off" label="First Name" Icon={PersonPinOutlinedIcon} onChange={onChange}/>
-        <InputField autoComplete="off" label="Last Name" Icon={Groups3OutlinedIcon} onChange={onChange}/>
+    <form className="overflow-hidden">
+        <span className="flex flex-row w-[100%] gap-1">
+          <InputField autoComplete="off" label="Name" Icon={PersonPinOutlinedIcon} onChange={onChange} checked={validEntryStatus.firstName}/>
+          <InputField autoComplete="off" label="Surname" Icon={Groups3OutlinedIcon} onChange={onChange} checked={validEntryStatus.lastName}/>
+        </span>
         <InputField autoComplete="email" label="Email Address" Icon={MailOutlinedIcon} onChange={onChange} checked={validEntryStatus.email}/>
         <InputField autoComplete="password" label="Password" Icon={PasswordOutlinedIcon} onChange={onChange} checked={validEntryStatus.password}/>
-        <InputField autoComplete="off" label="Confirm Password" Icon={KeyOutlinedIcon} onChange={onChange} checked={validEntryStatus.confirmPassword}/>
+        <InputField ref={ref} autoComplete="off" label="Confirm Password" Icon={KeyOutlinedIcon} onChange={onChange} checked={validEntryStatus.confirmPassword}/>
         <Button
           type = "submit"
           variant="contained"
