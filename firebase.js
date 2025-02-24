@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider} from "firebase/auth";
+import { getAuth, setPersistence, browserSessionPersistence } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -15,7 +15,8 @@ const firebaseApp = initializeApp(firebaseConfig);
 console.log("Firebase initialized successfully!");
 
 const firebaseAuth = getAuth(firebaseApp);
-const googleAuthProvider = new GoogleAuthProvider();
-export {firebaseAuth, googleAuthProvider};
+setPersistence(firebaseAuth, browserSessionPersistence);
+
+export {firebaseAuth};
 
 
