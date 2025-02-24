@@ -1,12 +1,12 @@
-import { Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import MailOutlinedIcon from '@mui/icons-material/MailOutlined';
 import PasswordOutlinedIcon from '@mui/icons-material/PasswordOutlined';
 import InputField from "./InputField";
 import { useState } from "react";
 import { emailRegex } from "../../utils/validatorConstants";
-import { loginUser, getUserProfile } from "../../services/loginService";
+import { login } from "../../services/firebaseAuth";
 
-const Login = () => {
+const Login = ({ setAuthState }) => {
   const [data, setData] = useState({
     email: '',
     password: ''
@@ -30,9 +30,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = await loginUser(data.email, data.password);
-      const userData = await getUserProfile(token, {});
-      console.log("User Data:", userData);
+      const res = await login(data.email, data.password)
+      console.log(res)
     } catch (err) {
       console.error("Error during login process:", err);
       setError("Login failed, Please check your credentials!");
@@ -45,7 +44,12 @@ const Login = () => {
         <InputField autoComplete="email" label="Email Address" Icon={MailOutlinedIcon} onChange={onChange} checked={isValid}/>
         <InputField autoComplete="password" label="Password" Icon={PasswordOutlinedIcon} onChange={onChange}/>
         {error && <p className="text-center text-red-500">{error}</p>}
-        <Button className="!block !normal-case !mt-[-10px] !underline !w-fit !text-center">
+        <Button className="!block !normal-case !mt-[-10px] !underline !w-fit !text-center" 
+        onClick={() => setAuthState({
+          login: 0,
+          register: 0,
+          forgetPass: 1
+        })}>
           reset password
         </Button>
         <Button

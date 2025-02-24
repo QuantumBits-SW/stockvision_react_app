@@ -7,8 +7,7 @@ import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
 import { useState, useMemo, useRef } from 'react';
 import { emailRegex, passwordRegex } from "../../utils/validatorConstants";
 import { Button } from "@mui/material";
-import { signupUser, getUserProfile } from "../../services/loginService";
-
+import { createUser } from "../../services/firebaseAuth";
 
 const Register = () => {
   // confirm password ref
@@ -84,21 +83,20 @@ const Register = () => {
     })) : null
   }
 
-  const handleSignup = async (e) => 
+  const handleSubmit = async (e) => 
   {
     e.preventDefault();
     try {
-          const token = await signupUser(registerData.email, registerData.password);
-          const userData = await getUserProfile(token, {...registerData, "isNewUser": true});
-          console.log("User Data:", userData);
-        } catch (err) {
-          console.error("Error during Sign up process:", err);
-        }
+      const res = await createUser(registerData.email, registerData.password)
+      console.log(res)
+    } catch (err) {
+      console.error("Error during Sign up process:", err);
+    }
   }
  
   return ( 
     <div className="flex flex-col justify-center animate-slideInFromRight overflow-hidden animate-slideInFromLeft">
-    <form className="overflow-hidden">
+    <form className="overflow-hidden" onSubmit={handleSubmit}>
         <span className="flex flex-row w-[100%] gap-1">
           <InputField autoComplete="off" label="Name" Icon={PersonPinOutlinedIcon} onChange={onChange} checked={validEntryStatus.firstName}/>
           <InputField autoComplete="off" label="Surname" Icon={Groups3OutlinedIcon} onChange={onChange} checked={validEntryStatus.lastName}/>

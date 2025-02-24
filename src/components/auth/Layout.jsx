@@ -7,9 +7,8 @@ import Login from "./Login";
 import Register from "./Register";
 import ResetPass from "./ResetPass";
 import { useState } from "react";
-import { Google } from "@mui/icons-material";
-import { loginWithGoogle } from "../../services/loginService";
-
+import { Google, FacebookRounded } from "@mui/icons-material";
+import { loginWithProvider } from "../../services/firebaseAuth";
 
 const Layout = () => {
   const authPopper = useSelector((state) => state.popper.authPopper);
@@ -25,14 +24,6 @@ const Layout = () => {
     setAuthState(initialState)
   }
 
-  const handleLoginWithGoogle = async()=>{
-    try {
-    const userData = await loginWithGoogle();
-    console.log(userData);
-  } catch (err) {
-    console.error("Error during login with google process:", err);
-  }
-  }
   return (
     authPopper === 1 &&
     <div className="absolute flex items-center justify-center z-[999] top-0 backdrop-blur-xs  w-screen h-screen bg-black/20">
@@ -45,10 +36,10 @@ const Layout = () => {
           </div>
           <div className="relative mx-auto bg-black/20 rounded-[30px] w-3/4 flex flex-row justify-around align-center">
             <div className={`z-1 bg-white !inline m-1 p-2 w-[48%] rounded-[30px] absolute h-[83%]
-            ${authState.login === 1 ? 'translate-x-[-50%] md:translate-x-[-48%] xl:translate-x-[-50%]' : authState.register === 1 ? 'translate-x-[50%] md:translate-x-[48%] xl:translate-x-[50%]' : 'translate-x-[-100%]'}
+            ${authState.login === 1 || authState.forgetPass === 1 ? 'translate-x-[-50%] md:translate-x-[-48%] xl:translate-x-[-50%]' : authState.register === 1 ? 'translate-x-[50%] md:translate-x-[48%] xl:translate-x-[50%]' : 'translate-x-[-100%]'}
             transition-all duration-[1s] ease-in-out`} />
             <button className={`z-3 m-1 p-2 w-2/4 rounded-[30px] cursor-pointer
-            ${authState.login === 1 ? 'text-black' : 'text-black/50'}`} 
+            ${authState.login === 1 || authState.forgetPass === 1 ? 'text-black' : 'text-black/50'}`} 
             onClick={() => setAuthState({
               login: 1,
               register: 0,
@@ -67,7 +58,7 @@ const Layout = () => {
             </button>
           </div>
           {
-            authState.login === 1 ? <Login /> : 
+            authState.login === 1 ? <Login setAuthState={setAuthState}/> : 
             authState.register === 1 ? <Register /> :
             authState.forgetPass === 1 ? <ResetPass /> : null
           }
@@ -81,8 +72,16 @@ const Layout = () => {
               </div>
             </div>
             <div className="flex gap-4 justify-center mt-2">
-              <IconButton className="border border-gray-300 rounded-lg p-3" onClick={handleLoginWithGoogle}>
+              <IconButton className="border border-gray-300 rounded-lg p-3" onClick={()=>loginWithProvider('google')}>
                 <Google className="text-gray-600" />
+              </IconButton>
+              <IconButton className="border border-gray-300 rounded-lg p-3" onClick={()=>{
+                loginWithProvider('fb')
+                .then((result)=>{
+                  console.log(result)
+                }).catch((error)=>console.log(error.message))
+                }}>
+                <FacebookRounded className="text-gray-600 !text-[1.5rem]" />
               </IconButton>
             </div>
           </div>
