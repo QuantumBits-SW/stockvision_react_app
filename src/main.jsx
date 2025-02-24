@@ -5,8 +5,10 @@ import App from './App.jsx'
 import { Provider } from 'react-redux';
 import { store } from './store/index.js';
 import { setupInterceptor } from './utils/interceptors.js';
+import { authObserver } from './services/firebaseAuth.js';
 
 setupInterceptor()
+authObserver();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

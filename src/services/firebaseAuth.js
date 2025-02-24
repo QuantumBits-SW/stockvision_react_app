@@ -1,6 +1,5 @@
 import { setUser, removeUser, setLoading } from '../store/slices/authSlice';
 import { store } from '../store/index'
-
 import {
   onAuthStateChanged,
   createUserWithEmailAndPassword,
@@ -16,9 +15,9 @@ import { firebaseAuth } from '../../firebase';
 
 export const authObserver = () => {
   store.dispatch(setLoading(true));
-  onAuthStateChanged(authObserver, async (user) => {
+  onAuthStateChanged(firebaseAuth, async (user) => {
     if(user) {
-      const token = user.getIdToken();
+      const token = user.stsTokenManager.accessToken;
       store.dispatch(setUser({user, token}));
     } else {
       store.dispatch(removeUser());
@@ -29,10 +28,6 @@ export const authObserver = () => {
 export const createUser = async (email, password) => {
   try{
     const result = await createUserWithEmailAndPassword(firebaseAuth, email, password);
-    store.dispatch(setUser({
-      user: result.user.email,
-      token: result.user.accessToken
-    }));
     return {
       message: "User created successfully!",
       result
@@ -57,7 +52,6 @@ export const login = async (email, password) => {
 export const logout = async () => {
   try{
     await signOut();
-    // store.dispatch(removeUser);
     return "Successfully logged out!";
   } catch(error) {
     throw new Error(error);
@@ -74,10 +68,6 @@ export const loginWithProvider = async (provider) => {
       authProvider.addScope('email');
     }
     const result = await signInWithPopup(firebaseAuth, authProvider);
-    store.dispatch(setUser({
-      user: result.user.displayName,
-      token: result.user.accessToken
-    }));
     return {
       message: `Successfully signed in using ${provider.toUpperCase()}`,
       result
