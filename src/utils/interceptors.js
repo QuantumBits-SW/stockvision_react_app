@@ -9,7 +9,7 @@ export const setupInterceptor = () => {
   axiosInstance.interceptors.request.use((config)=>{
     const token = store.getState().auth?.token
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = `${token}`
     }
     return config;
   }, (error) => {

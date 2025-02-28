@@ -1,8 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { Button } from "@mui/material";
+import { GET_ALL_STOCKS } from "../../utils/constants";
+import axiosInstance from "../../utils/interceptors";
 
 const StockDashboard = () => {
   const [stocks, setStocks] = useState([]);
+  useEffect(()=>{
+    axiosInstance.get(`${GET_ALL_STOCKS}`).then((response) =>{
+      setStocks(response.data);
+    }).catch((error)=>{
+      console.error("Error ffetching stocks", error);
+    })
+}, []);
 
   return (
     <div className="p-6 max-w-6xl mx-auto">

@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, Typography } from "@mui/material";
 import { motion } from "framer-motion";
+import axiosInstance from "../../utils/interceptors";
+import { GET_USER_HOLDINGS } from "../../utils/constants";
 import { useDispatch, useSelector  } from "react-redux";
 
 const Holdings = () => {
   const [holdings, setHoldings] = useState([]);
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
+  useEffect(()=>{
+      axiosInstance.get(`${GET_USER_HOLDINGS}/${user.id}`).then((response) =>{
+        setHoldings(response.data);
+      }).catch((error)=>{
+        console.error("Error fetching holdings", error);
+      })
+  }, []);
+
 
   return (
     <div className="bg-gray-900 min-h-screen p-6 text-white">
