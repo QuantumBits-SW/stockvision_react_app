@@ -4,16 +4,13 @@ import { useDispatch, useSelector  } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../../services/firebaseAuth";
 import { useNavigate } from "react-router-dom";
+import UserProfileDrawer from "../user/UserProfileDrawer";
+
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-
-  const handleLogout = async()=>{
-      await logout();
-      navigate("/");
-    }
   return (
     <>
       <div className="w-[90vw] mx-auto bg-slate-400/15 mt-[20px] rounded-[5rem] p-[1%] backdrop-blur-xs">
@@ -37,7 +34,7 @@ const Navbar = () => {
             <Link to="/holdings">
               <Button>Portfolio</Button>
             </Link>
-            <Button onClick={handleLogout}>Logout</Button>
+            <UserProfileDrawer/>
           </>
         ) : (
           <Button onClick={() => dispatch(openAuth())}>
