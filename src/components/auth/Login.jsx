@@ -5,12 +5,22 @@ import InputField from "./InputField";
 import { useState } from "react";
 import { emailRegex } from "../../utils/validatorConstants";
 import { login } from "../../services/firebaseAuth";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { closeAuth } from "../../store/slices/popperSlice";
+import { setUser } from "../../store/slices/authSlice";
+
 
 const Login = ({ setAuthState }) => {
   const [data, setData] = useState({
     email: '',
     password: ''
   })
+
+  const navigate = useNavigate();
+  const authPopper = useSelector((state) => state.popper.authPopper);
+  const dispatch = useDispatch();
+
 
   const [isValid, setIsValid] = useState(false);
   const [error, setError] = useState(null);
@@ -30,7 +40,11 @@ const Login = ({ setAuthState }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await login(data.email, data.password)
+      const res = await login(data.email, data.password);
+      
+      //dispatch(setUser(res.data));
+      dispatch(closeAuth());
+      navigate("/holdings");
       console.log(res)
     } catch (err) {
       console.error("Error during login process:", err);

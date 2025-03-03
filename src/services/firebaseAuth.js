@@ -18,7 +18,7 @@ export const authObserver = () => {
   onAuthStateChanged(firebaseAuth, async (user) => {
     if(user) {
       const token = user.stsTokenManager.accessToken;
-      store.dispatch(setUser({user, token}));
+      store.dispatch(setUser({ user, token}));
     } else {
       store.dispatch(removeUser());
     }
@@ -51,7 +51,8 @@ export const login = async (email, password) => {
 
 export const logout = async () => {
   try{
-    await signOut();
+    await signOut(firebaseAuth);
+    store.dispatch(removeUser());
     return "Successfully logged out!";
   } catch(error) {
     throw new Error(error);
