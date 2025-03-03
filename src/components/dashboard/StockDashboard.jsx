@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Button } from "@mui/material";
 import { GET_ALL_STOCKS } from "../../utils/constants";
 import axiosInstance from "../../utils/interceptors";
+import StockModal from "../charts/StockSelector";
+import StockSelector from "../charts/StockSelector";
 
 const StockDashboard = () => {
   const [stocks, setStocks] = useState([]);
@@ -14,11 +15,12 @@ const StockDashboard = () => {
     })
 }, []);
 
+
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Stock Trading Dashboard</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {stocks.map((stock) => (
+        {(Array.isArray(stocks) ? stocks : []).map((stock) => (
           <div key={stock.id} className="bg-white p-4 rounded-xl shadow-lg flex flex-col items-center">
             <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center">
               <img
@@ -39,6 +41,7 @@ const StockDashboard = () => {
           </div>
         ))}
       </div>
+      <StockSelector />
     </div>
   );
 };
