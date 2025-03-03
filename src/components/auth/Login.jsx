@@ -7,9 +7,6 @@ import { emailRegex } from "../../utils/validatorConstants";
 import { login } from "../../services/firebaseAuth";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { closeAuth } from "../../store/slices/popperSlice";
-import { setUser } from "../../store/slices/authSlice";
-
 
 const Login = ({ setAuthState }) => {
   const [data, setData] = useState({
@@ -41,9 +38,6 @@ const Login = ({ setAuthState }) => {
     e.preventDefault();
     try {
       const res = await login(data.email, data.password);
-      
-      //dispatch(setUser(res.data));
-      dispatch(closeAuth());
       navigate("/holdings");
       console.log(res)
     } catch (err) {

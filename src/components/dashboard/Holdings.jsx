@@ -23,7 +23,7 @@ const Holdings = () => {
     <div className="bg-gray-900 min-h-screen p-6 text-white">
       <h1 className="text-3xl font-bold text-center mb-6">Your Holdings</h1>
       <div className="space-y-4">
-        {holdings.map((stock) => (
+        {(Array.isArray(holdings) ? holdings : []).map((stock) => (
           <motion.div
             key={stock.id}
             initial={{ opacity: 0, y: 10 }}
