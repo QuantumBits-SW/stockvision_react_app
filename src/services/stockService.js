@@ -1,7 +1,5 @@
 const finnhubBaseUrl = import.meta.env.VITE_FINNHUB_URL;
-const stockDataBaseUrl = import.meta.env.VITE_STOCKDATA_URL;
 const finnhubToken = import.meta.env.VITE_FINNHUB_API_KEY;
-const stockDataToken = import.meta.env.VITE_STOCKDATA_API_KEY;
 const finnhubRestBaseUrl = import.meta.env.VITE_FINNHUB_REST_URL;
 const fmpBaseUrl = import.meta.env.VITE_FMP_URL;
 const fmpToken = import.meta.env.VITE_FMP_API_KEY;

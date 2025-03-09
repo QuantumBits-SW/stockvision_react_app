@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { GET_ALL_STOCKS } from "../../utils/constants";
 import axiosInstance from "../../utils/interceptors";
-import StockModal from "../charts/StockSelector";
 import StockSelector from "../charts/StockSelector";
 
 const StockDashboard = () => {
