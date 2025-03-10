@@ -8,7 +8,7 @@ import RealTrades from "./RealTrades";
 const StockModal = ({ open, onClose, symbol }) => {
   const [tabIndex, setTabIndex] = useState(0);
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open={open} onClose={onClose} sx={{marginTop:"10vh"}}>
       <Box
         sx={{
           position: "absolute",
@@ -20,6 +20,7 @@ const StockModal = ({ open, onClose, symbol }) => {
           boxShadow: 24,
           p: 4,
           borderRadius: 2,
+          overflow: "hidden"
         }}
       >
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
@@ -38,7 +39,7 @@ const StockModal = ({ open, onClose, symbol }) => {
         <Box mt={2}>
           {tabIndex === 0 && <HistoricalChart symbol={symbol} />}
           {tabIndex === 1 && <RealTrades symbol={symbol} />}
-          {tabIndex === 2 && <Prediction />}
+          {tabIndex === 2 && <Prediction symbol={symbol}/>}
         </Box>
       </Box>
     </Modal>
