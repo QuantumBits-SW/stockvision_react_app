@@ -1,14 +1,12 @@
 const finnhubBaseUrl = import.meta.env.VITE_FINNHUB_URL;
-const stockDataBaseUrl = import.meta.env.VITE_STOCKDATA_URL;
 const finnhubToken = import.meta.env.VITE_FINNHUB_API_KEY;
-const stockDataToken = import.meta.env.VITE_STOCKDATA_API_KEY;
 const finnhubRestBaseUrl = import.meta.env.VITE_FINNHUB_REST_URL;
 const fmpBaseUrl = import.meta.env.VITE_FMP_URL;
 const fmpToken = import.meta.env.VITE_FMP_API_KEY;
 
 // Open WebSocket connection
 const openConnection = () => {
-  const socket = new WebSocket(`${finnhubBaseUrl}/ws?token=${finnhubToken}`);
+  const socket = new WebSocket(`${finnhubBaseUrl}?token=${finnhubToken}`);
 
   socket.onopen = () => console.log("WebSocket connection opened.");
   socket.onerror = (error) => console.error("WebSocket error:", error);
@@ -119,11 +117,43 @@ const checkMarketStatus = async () => {
       throw new Error("Invalid market status response");
     }
 
-    return data.isOpen; // Returns true if market is open, false if closed
+    if (data.session && data.holiday !== null) {
+      return true;
+    } else {
+      return false;
+    }
+
   } catch (error) {
     console.error("Error checking market status:", error);
     return false; // Default to closed if there's an error
   }
 };
 
-export { openConnection, subscribe, unsubscribe, fetchIntradayData, checkMarketStatus, fetchData };
+const getOpenPriceAndPercentChange = async (symbol) => {
+  try {
+    const response = await fetch(
+      `${fmpBaseUrl}/quote/${symbol}?apikey=${fmpToken}`
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const json = await response.json();
+
+    // Ensure data exists
+    if (!json || json.length === 0) {
+      throw new Error("No quote data found");
+    }
+
+    return {
+      open: json[0].open,
+      percentChange: json[0].changesPercentage,
+    };
+  } catch (error) {
+    console.error("Error fetching stock quote data:", error);
+    return { open: 0, percentChange: 0 };
+  }
+}
+
+export { openConnection, subscribe, unsubscribe, fetchIntradayData, checkMarketStatus, fetchData, getOpenPriceAndPercentChange };
