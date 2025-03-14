@@ -95,7 +95,7 @@ const Prediction = ({ symbol }) => {
           </Alert>
         </Box>
       )}
-
+      
       <ToggleButtonGroup
         color="primary"
         value={chartType}

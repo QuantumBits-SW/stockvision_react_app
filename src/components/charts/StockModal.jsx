@@ -36,7 +36,6 @@ const StockModal = ({ open, onClose, symbol }) => {
             <Tab label="Real-Time" />
             <Tab label="Prediction Analysis" />
           </Tabs>
-
           <Box mt={2}>
             {tabIndex === 0 && <HistoricalChart symbol={symbol} />}
             {tabIndex === 1 && <RealTrades symbol={symbol} />}
