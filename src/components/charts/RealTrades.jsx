@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import CanvasJSReact from '@canvasjs/react-stockcharts';
-import { Card, CardContent, Box, Typography, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Card, CardContent, Box, Typography, ToggleButton, ToggleButtonGroup, Button } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import HttpsIcon from '@mui/icons-material/Https';
 import { useStockData } from '../../context/StockProvider';
+import BuyModal from '../trades/BuyModal';
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-const RealTrades = () => {
+const RealTrades = ({ symbol }) => {
   const { ohlcHistory, lineData, activeCandle, lastPrice, marketOpen, openPrice } = useStockData();
   const [ohlc, setOhlc] = useState([]);
   const [chartType, setChartType] = useState("line"); // Default to Line Chart
   const [prevPrice, setPrevPrice] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isBuyOpen, setIsBuyOpen] = useState(false);
 
   // Live Price Indicator Color
   const priceColor = prevPrice >= openPrice ? "green" : "red";
@@ -66,6 +68,19 @@ const RealTrades = () => {
           <span style={{ color: priceColor }}>{lastPrice ? `$${lastPrice.toFixed(2)}` : "Loading..."}</span>
           <span style={{ color: priceColor }}> ({percentChange ? percentChange.toFixed(2) : "0"}%)</span> 
         </Typography>
+
+        {/* Buy component */}
+        <div>
+            <Button 
+              onClick={() => setIsBuyOpen(true)}
+              variant='contained'
+              color="success"
+              sx={{ float: 'right' }}
+            >
+              Buy
+            </Button>
+            {isBuyOpen && <BuyModal symbol={symbol} onClose={() => setIsBuyOpen(false)} />}
+          </div>
 
         <ToggleButtonGroup
           color="primary"

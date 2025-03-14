@@ -3,6 +3,7 @@ import { Drawer, Button, Typography, IconButton, Divider } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { logout } from "../../services/firebaseAuth";
 import { useNavigate } from "react-router-dom";
+import DepositFunds from "../wallet/DepositFunds";
 
 const UserProfileDrawer = ({ user }) => {
   const [open, setOpen] = useState(false);
@@ -78,6 +79,7 @@ const UserProfileDrawer = ({ user }) => {
         ) : (
           <Typography>No user information available.</Typography>
         )}
+        <DepositFunds />
       </Drawer>
     </>
   );

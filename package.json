@@ -16,6 +16,7 @@
     "@mui/icons-material": "^6.4.4",
     "@mui/material": "^6.4.4",
     "@reduxjs/toolkit": "^2.5.1",
+    "@stripe/react-stripe-js": "^3.4.0",
     "@tailwindcss/vite": "^4.0.6",
     "axios": "^1.7.9",
     "firebase": "^11.3.1",
