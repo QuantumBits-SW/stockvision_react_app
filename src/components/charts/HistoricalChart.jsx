@@ -171,8 +171,8 @@ const HistoricalChart = ({ symbol }) => {
       </ToggleButtonGroup>
       {
         alignment === "spline" ?
-        <StockCanvas options={optionsSpline} /> :
-        <StockCanvas options={options} />
+        <StockCanvas options={optionsSpline} containerProps={{ width: "100%", height: "500px" }}/> :
+        <StockCanvas options={options} containerProps={{ width: "100%", height: "500px" }}/>
       }
     </Paper>
   );

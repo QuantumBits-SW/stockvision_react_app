@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Paper, CircularProgress, Alert, Select, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Box, Typography, Paper, CircularProgress, Alert, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import CanvasJSReact from "@canvasjs/react-stockcharts";
 
 import axios from "axios";
@@ -95,23 +95,25 @@ const Prediction = ({ symbol }) => {
           </Alert>
         </Box>
       )}
+      
+      <ToggleButtonGroup
+        color="primary"
+        value={chartType}
+        exclusive
+        onChange={(e) => setChartType(e.target.value)}
+        aria-label="Platform"
+      >
+        <ToggleButton value="line">Line</ToggleButton>
+        <ToggleButton value="candlestick">Candle</ToggleButton>
+      </ToggleButtonGroup>
 
-      {/* Chart Type Selector */}
-      <Box display="flex" justifyContent="center" mt={2}>
-        <Typography variant="body1" sx={{ mr: 2 }}>Chart Type:</Typography>
-        <Select value={chartType} onChange={(e) => setChartType(e.target.value)}>
-          <MenuItem value="candlestick">Candlestick</MenuItem>
-          <MenuItem value="line">Line</MenuItem>
-        </Select>
-      </Box>
-
-      {/* Stock Chart */}
       {
         chartType === "candlestick" ? (
           <Box display="flex" justifyContent="center" alignItems="center" height={400} mt={2}>
         {loading ? <CircularProgress /> : <CanvasJSStockChart options={options} />}
       </Box>) : (
           <CanvasJSChart
+          containerProps={{ width: "100%", height: "400px" }}
           options={{
             theme: "light2",
             axisX: {
@@ -127,7 +129,7 @@ const Prediction = ({ symbol }) => {
                 showInLegend: true,
                 name: "Historical Data",
                 dataPoints: historicalData.map((item) => ({
-                  x: new Date(item.x), // Ensure x is a valid Date object
+                  x: new Date(item.x), 
                   y: item.y[3], // Use closing price for line/spline charts
                 })),
               },
@@ -136,7 +138,7 @@ const Prediction = ({ symbol }) => {
                 showInLegend: true,
                 name: "Predicted Data",
                 dataPoints: predictedData.map((item) => ({
-                  x: new Date(item.x), // Ensure x is a valid Date object
+                  x: new Date(item.x),
                   y: item.y[3], // Use closing price
                 })),
                 color: "rgba(0, 123, 255, 0.5)",

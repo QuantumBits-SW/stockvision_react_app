@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { Box, Typography, Button, Paper } from "@mui/material";
 import StockModal from "./StockModal";
 
-const stockList = ["AAPL", "GOOGL", "AMZN", "MSFT", "TSLA"];
+const stockList = [
+  "AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "META", "NVDA", "JPM", "JNJ", "V",
+  "PG", "DIS", "MA", "PYPL", "NFLX", "ADBE", "INTC", "CMCSA", "PFE", "KO",
+  "PEP", "CSCO", "XOM", "ABT", "CRM", "NKE", "MRK", "WMT", "T", "BAC",
+  "MCD", "COST", "CVX", "MDT", "NEE", "LLY", "HON", "ORCL", "AVGO", "TXN",
+  "UNH", "QCOM", "BMY", "IBM", "AMD", "AMAT", "GE", "CAT", "MMM", "GS"
+];
 
 const StockSelector = () => {
   const [selectedStock, setSelectedStock] = useState(null);
