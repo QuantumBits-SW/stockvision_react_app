@@ -6,6 +6,10 @@ import { Provider } from 'react-redux';
 import { store } from './store/index.js';
 import { setupInterceptor } from './utils/interceptors.js';
 import { authObserver } from './services/firebaseAuth.js';
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 setupInterceptor()
 authObserver();
@@ -13,7 +17,9 @@ authObserver();
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
-      <App />
+      <Elements stripe={stripePromise}>
+        <App />
+      </Elements>
     </Provider>
   </StrictMode>
 )

@@ -9,22 +9,22 @@ import { StockDataProvider } from "../../context/StockProvider";
 const StockModal = ({ open, onClose, symbol }) => {
   const [tabIndex, setTabIndex] = useState(0);
   return (
-    <Modal open={open} onClose={onClose} sx={{marginTop:"10vh"}}>
+    <Modal open={open} onClose={onClose} sx={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    }}>
       <Box
         sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
           width: 800,
           bgcolor: "background.paper",
           boxShadow: 24,
-          p: 4,
+          p: 2,
           borderRadius: 2,
           overflow: "hidden"
         }}
       >
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="h6">Stock Analysis - {symbol}</Typography>
           <IconButton onClick={onClose}>
             <CloseIcon />
