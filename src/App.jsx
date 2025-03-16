@@ -1,10 +1,10 @@
 import Navbar from "./components/common/Navbar";
 import Layout from "./components/auth/Layout";
 import StockDashboard from "./components/dashboard/StockDashboard";
-import Holdings from "./components/dashboard/Holdings";
+import Portfolio from "./components/dashboard/Portfolio";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
-
+import OrderHistory from "./components/dashboard/OrderHistory";
 
 function App() {
   return (
@@ -14,8 +14,9 @@ function App() {
       <Layout/>
       <Routes>
         <Route path="/" element={<StockDashboard />} />
-        <Route path="/holdings" element={ <PrivateRoute element={<Holdings />}/>} />
+        <Route path="/portfolio" element={ <PrivateRoute element={<Portfolio />}/>} />
         <Route path="/stocks" element={ <PrivateRoute element={<StockDashboard />}/>} />
+        <Route path="/orders" element={ <PrivateRoute element={<OrderHistory />}/>} />
       </Routes>
     </Router>
     </>

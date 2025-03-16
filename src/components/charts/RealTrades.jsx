@@ -5,10 +5,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import HttpsIcon from '@mui/icons-material/Https';
 import { useStockData } from '../../context/StockProvider';
 import BuyModal from '../trades/BuyModal';
+import SellModal from '../trades/SellModal';
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-const RealTrades = ({ symbol }) => {
+const RealTrades = ({ symbol, mode }) => {
   const { ohlcHistory, lineData, activeCandle, lastPrice, marketOpen, openPrice } = useStockData();
   const [ohlc, setOhlc] = useState([]);
   const [chartType, setChartType] = useState("line"); // Default to Line Chart
@@ -69,8 +70,9 @@ const RealTrades = ({ symbol }) => {
           <span style={{ color: priceColor }}> ({percentChange ? percentChange.toFixed(2) : "0"}%)</span> 
         </Typography>
 
-        {/* Buy component */}
-        <div>
+          {/* Buy/Sell component */}
+          {mode === 'buy' &&
+          <div>
             <Button 
               onClick={() => setIsBuyOpen(true)}
               variant='contained'
@@ -81,6 +83,22 @@ const RealTrades = ({ symbol }) => {
             </Button>
             {isBuyOpen && <BuyModal symbol={symbol} onClose={() => setIsBuyOpen(false)} />}
           </div>
+          }
+
+          {
+            mode === 'sell' &&
+            <div>
+              <Button 
+                onClick={() => setIsBuyOpen(true)}
+                variant='contained'
+                color="error"
+                sx={{ float: 'right' }}
+              >
+                Sell
+              </Button>
+              {isBuyOpen && <SellModal symbol={symbol} onClose={() => setIsBuyOpen(false)} />}
+            </div>
+          }
 
         <ToggleButtonGroup
           color="primary"
