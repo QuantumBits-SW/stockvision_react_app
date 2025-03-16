@@ -2,7 +2,6 @@ import { Typography, Button } from "@mui/material";
 import { openAuth } from "../../store/slices/popperSlice";
 import { useDispatch, useSelector  } from "react-redux";
 import { Link } from "react-router-dom";
-import { logout } from "../../services/firebaseAuth";
 import { useNavigate } from "react-router-dom";
 import UserProfileDrawer from "../user/UserProfileDrawer";
 
@@ -10,7 +9,6 @@ import UserProfileDrawer from "../user/UserProfileDrawer";
 const Navbar = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
   return (
     <>
       <div className="w-[90vw] mx-auto bg-slate-400/15 mt-[20px] rounded-[5rem] p-[1%] backdrop-blur-xs">
@@ -31,8 +29,11 @@ const Navbar = () => {
             <Link to="/stocks">
               <Button>Equity</Button>
             </Link>
-            <Link to="/holdings">
+            <Link to="/portfolio">
               <Button>Portfolio</Button>
+            </Link>
+            <Link to="/orders">
+              <Button>Orders</Button>
             </Link>
             <UserProfileDrawer/>
           </>

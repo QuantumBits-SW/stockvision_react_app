@@ -15,7 +15,7 @@ export const StockDataProvider = ({ symbol, children }) => {
   const [percentChange, setPercentChange] = useState(0);
 
   useEffect(() => {
-    setMarketOpen(checkMarketStatus());
+    checkMarketStatus().then((status) => setMarketOpen(status));
   }, []);
 
   useEffect(() => {

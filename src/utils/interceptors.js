@@ -2,7 +2,7 @@ import axios from 'axios'
 import { store } from '../store/index'
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL
+  baseURL: import.meta.env.VITE_BACKEND_URL + '/stockvision/api'
 });
 
 export const setupInterceptor = () => {
