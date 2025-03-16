@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Drawer, Button, Typography, IconButton, Divider } from "@mui/material";
+import { Drawer, Button, Typography, IconButton, Divider, Box } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { logout } from "../../services/firebaseAuth";
 import { useNavigate } from "react-router-dom";
-import DepositFunds from "../wallet/DepositFunds";
+import WalletActions from "../wallet/WalletActions";
 
 const UserProfileDrawer = ({ user }) => {
   const [open, setOpen] = useState(false);
@@ -14,10 +14,16 @@ const UserProfileDrawer = ({ user }) => {
     navigate("/");
   };
 
+  const closeProfileDrawer = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       <Button
+        variant="contained"
         onClick={() => setOpen(true)}
+        sx={{ borderRadius: "20px", backgroundColor: "#4F46E5", color: "white" }}
       >
         Profile
       </Button>
@@ -25,61 +31,62 @@ const UserProfileDrawer = ({ user }) => {
       <Drawer
         anchor="right"
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={closeProfileDrawer}
         sx={{
           "& .MuiDrawer-paper": {
-            width: "300px",
-            backgroundColor: "oklch(0.21 0.034 264.665)", 
-            color: "white", 
-            padding: "20px",
-            boxShadow: "-4px 0px 10px rgba(0, 0, 0, 0.1)",
+            width: "350px",
+            backgroundColor: "#1E1E2F",
+            color: "white",
+            padding: "24px",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between", 
+            borderRadius: "10px 0 0 10px",
           },
         }}
       >
-        <div className="flex justify-between items-center mb-4">
-          <Typography variant="h6" sx={{ fontWeight: "bold", color: "white" }}>
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+          <Typography variant="h6" fontWeight="bold" color="white">
             User Profile
           </Typography>
-          <IconButton onClick={() => setOpen(false)}>
+          <IconButton onClick={closeProfileDrawer}>
             <CloseIcon sx={{ color: "white" }} />
           </IconButton>
-        </div>
+        </Box>
 
-        <Divider sx={{ marginBottom: "20px", backgroundColor: "#A4B0C0" }} />
+        <Divider sx={{ backgroundColor: "#A4B0C0", marginBottom: "20px" }} />
 
         {user ? (
-          <>
-            <Typography sx={{ fontSize: "16px", marginBottom: "15px" }}>
+          <Box>
+            <Typography sx={{ fontSize: "16px", marginBottom: "10px" }}>
               <strong>First Name:</strong> {user.firstName}
             </Typography>
-            <Typography sx={{ fontSize: "16px", marginBottom: "15px" }}>
+            <Typography sx={{ fontSize: "16px", marginBottom: "10px" }}>
               <strong>Last Name:</strong> {user.lastName}
             </Typography>
-            <Typography sx={{ fontSize: "16px", marginBottom: "25px" }}>
+            <Typography sx={{ fontSize: "16px", marginBottom: "20px" }}>
               <strong>Email:</strong> {user.email}
             </Typography>
 
-            <Button
-              variant="contained"
-              color="error"
-              fullWidth
-              sx={{
-                borderRadius: "20px",
-                padding: "10px",
-                marginTop: "auto", 
-              }}
-              onClick={handleLogout}
-            >
-              Logout
-            </Button>
-          </>
+            <WalletActions />
+          </Box>
         ) : (
           <Typography>No user information available.</Typography>
         )}
-        <DepositFunds />
+
+        <Button
+          variant="contained"
+          color="error"
+          fullWidth
+          sx={{
+            borderRadius: "10px",
+            padding: "10px",
+            marginTop: "auto",
+            backgroundColor: "#E63946",
+          }}
+          onClick={handleLogout}
+        >
+          Logout
+        </Button>
       </Drawer>
     </>
   );
