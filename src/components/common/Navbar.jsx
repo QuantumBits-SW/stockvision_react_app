@@ -1,8 +1,7 @@
 import { Typography, Button } from "@mui/material";
 import { openAuth } from "../../store/slices/popperSlice";
-import { useDispatch, useSelector  } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import UserProfileDrawer from "../user/UserProfileDrawer";
 
 

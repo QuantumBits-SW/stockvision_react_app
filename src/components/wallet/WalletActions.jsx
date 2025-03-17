@@ -18,10 +18,10 @@ const WalletActions = () => {
                 <Button
                     variant="contained"
                     sx={{
-                        backgroundColor: "#007BFF",
+                        backgroundColor: "#1465c0",
                         color: "white",
                         fontWeight: "bold",
-                        borderRadius: "10px",
+                        borderRadius: "30px",
                         padding: "10px",
                         width: "100%",
                         "&:hover": { backgroundColor: "#0056b3" },
@@ -36,13 +36,13 @@ const WalletActions = () => {
                 <Button
                     variant="contained"
                     sx={{
-                        backgroundColor: "#D81B60",
+                        backgroundColor: "rgb(0, 0, 0)",
                         color: "white",
                         fontWeight: "bold",
-                        borderRadius: "10px",
+                        borderRadius: "30px",
                         padding: "10px",
                         width: "100%",
-                        "&:hover": { backgroundColor: "#A71347" },
+                        "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.66))" },
                     }}
                     onClick={() => openModal("withdraw")}
                 >

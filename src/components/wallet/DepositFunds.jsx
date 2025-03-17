@@ -51,8 +51,8 @@ const DepositFunds = ({ onClose }) => {
           p: 3,
           borderRadius: "16px",
           boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
-          background: "white",
-          color: "#333",
+          background: "linear-gradient(45deg,rgba(26, 34, 126, 0.7),rgba(13, 72, 161, 0.8))",
+          color: "white",
           textAlign: "center",
           width: "100%",
         }}
@@ -66,7 +66,16 @@ const DepositFunds = ({ onClose }) => {
           type="number"
           variant="outlined"
           fullWidth
-          sx={{ my: 2 }}
+          sx={{
+              my: 2,
+              input: { color: "white" },
+              label: { color: "rgba(255,255,255,0.8)" },
+              "& .MuiOutlinedInput-root": {
+                  "& fieldset": { borderColor: "white", borderRadius: "10px" },
+                  "&:hover fieldset": { borderColor: "rgba(255,255,255,0.8)" },
+                  "&.Mui-focused fieldset": { borderColor: "white" },
+              },
+          }}
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
@@ -75,21 +84,19 @@ const DepositFunds = ({ onClose }) => {
 
         <Button
           variant="contained"
-          color="primary"
           fullWidth
           onClick={handleDeposit}
           disabled={loading}
-          sx={{ borderRadius: "20px", mt: 2, py: 1.5 }}
+          sx={{ borderRadius: "20px", mt: 2, py: 1.5, backgroundColor: "#1465c0 !important" }}
         >
           {loading ? <CircularProgress size={24} color="inherit" /> : "Deposit"}
         </Button>
 
         <Button
-          variant="outlined"
-          color="secondary"
+          variant="contained"
           fullWidth
           onClick={onClose}
-          sx={{ borderRadius: "20px", mt: 1, py: 1.5 }}
+          sx={{ borderRadius: "20px", mt: 1, py: 1.5, backgroundColor: "#000 !important" }}
         >
           Cancel
         </Button>

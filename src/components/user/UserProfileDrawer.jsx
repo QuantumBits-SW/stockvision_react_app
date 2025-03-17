@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Drawer, Button, Typography, IconButton, Divider, Box } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import CloseIcon from '@mui/icons-material/Close';
 import { logout } from "../../services/firebaseAuth";
 import { useNavigate } from "react-router-dom";
 import WalletActions from "../wallet/WalletActions";
+import { useSelector } from "react-redux";
 
-const UserProfileDrawer = ({ user }) => {
+const UserProfileDrawer = () => {
+  const { user } = useSelector((state) => state.auth);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -23,7 +25,7 @@ const UserProfileDrawer = ({ user }) => {
       <Button
         variant="contained"
         onClick={() => setOpen(true)}
-        sx={{ borderRadius: "20px", backgroundColor: "#4F46E5", color: "white" }}
+        sx={{ borderRadius: "20px", backgroundColor: "#1465c0", color: "white" }}
       >
         Profile
       </Button>
@@ -35,21 +37,23 @@ const UserProfileDrawer = ({ user }) => {
         sx={{
           "& .MuiDrawer-paper": {
             width: "350px",
-            backgroundColor: "#1E1E2F",
-            color: "white",
             padding: "24px",
             display: "flex",
             flexDirection: "column",
-            borderRadius: "10px 0 0 10px",
+            borderRadius: "30px 0 0 30px",
           },
         }}
       >
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-          <Typography variant="h6" fontWeight="bold" color="white">
-            User Profile
+          <Typography variant="h6" fontWeight="bold">
+            {user ? `${user.displayName}'s Profile` : "Profile"}
           </Typography>
-          <IconButton onClick={closeProfileDrawer}>
-            <CloseIcon sx={{ color: "white" }} />
+          <IconButton onClick={closeProfileDrawer} sx={{ color: "#A4B0C0", "&:hover": { bgcolor: "#1465c0", color: "#fff" }}}>
+            <CloseIcon sx={{
+              fontSize: "30px",
+              padding: "0",
+              margin: "0"
+            }}/>
           </IconButton>
         </Box>
 
@@ -57,12 +61,6 @@ const UserProfileDrawer = ({ user }) => {
 
         {user ? (
           <Box>
-            <Typography sx={{ fontSize: "16px", marginBottom: "10px" }}>
-              <strong>First Name:</strong> {user.firstName}
-            </Typography>
-            <Typography sx={{ fontSize: "16px", marginBottom: "10px" }}>
-              <strong>Last Name:</strong> {user.lastName}
-            </Typography>
             <Typography sx={{ fontSize: "16px", marginBottom: "20px" }}>
               <strong>Email:</strong> {user.email}
             </Typography>
