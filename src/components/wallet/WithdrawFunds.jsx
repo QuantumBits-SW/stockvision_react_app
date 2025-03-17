@@ -66,7 +66,7 @@ const WithdrawFunds = ({ onClose }) => {
                     p: 4,
                     borderRadius: "16px",
                     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
-                    background: "linear-gradient(135deg, #667eea, #764ba2)",
+                    background: "linear-gradient(45deg,rgba(26, 34, 126, 0.7),rgba(13, 72, 161, 0.8))",
                     color: "white",
                     textAlign: "center",
                     width: "100%",
@@ -75,7 +75,7 @@ const WithdrawFunds = ({ onClose }) => {
                 }}
             >
                 <Typography variant="h6" fontWeight="bold" gutterBottom>
-                    Withdraw Funds 💳
+                    Withdraw Funds
                 </Typography>
 
                 <Box
@@ -114,7 +114,7 @@ const WithdrawFunds = ({ onClose }) => {
                         input: { color: "white" },
                         label: { color: "rgba(255,255,255,0.8)" },
                         "& .MuiOutlinedInput-root": {
-                            "& fieldset": { borderColor: "white" },
+                            "& fieldset": { borderColor: "white", borderRadius: "10px" },
                             "&:hover fieldset": { borderColor: "rgba(255,255,255,0.8)" },
                             "&.Mui-focused fieldset": { borderColor: "white" },
                         },
@@ -138,7 +138,7 @@ const WithdrawFunds = ({ onClose }) => {
                     onClick={handleWithdraw}
                     disabled={loading}
                     sx={{
-                        borderRadius: "20px",
+                        borderRadius: "30px",
                         mt: 2,
                         py: 1.5,
                         background: "rgba(255,255,255,0.3)",
@@ -154,7 +154,7 @@ const WithdrawFunds = ({ onClose }) => {
                     fullWidth
                     onClick={onClose}
                     sx={{
-                        borderRadius: "20px",
+                        borderRadius: "30px",
                         mt: 1,
                         py: 1.5,
                         color: "white",

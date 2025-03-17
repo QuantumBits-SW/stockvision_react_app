@@ -13,18 +13,14 @@ const FundsModal = ({ open, onClose, type }) => {
                     left: "50%",
                     transform: "translate(-50%, -50%)",
                     width: 400,
-                    bgcolor: "background.paper",
-                    boxShadow: 24,
+                    bgcolor: "transparent",
                     p: 3,
                     borderRadius: 2,
                     outline: "none",
                 }}
             >
-                <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Typography variant="h6">
-                        {type === "withdraw" ? "Withdraw Funds" : "Deposit Funds"}
-                    </Typography>
-                    <IconButton onClick={onClose}>
+                <Box display="flex" justifyContent="end" sx={{ mb: 1 }}>
+                    <IconButton onClick={onClose} sx={{ color: "#1465c0", bgcolor: "#fff", float: "right", "&:hover": { bgcolor: "#1465c0", color: "#fff" } }}>
                         <Close />
                     </IconButton>
                 </Box>
