@@ -61,8 +61,8 @@ const UserProfileDrawer = () => {
 
         {user ? (
           <Box>
-            <Typography sx={{ fontSize: "16px", marginBottom: "20px" }}>
-              <strong>Email:</strong> {user.email}
+            <Typography className="text-slate-600 text-md">
+              {user.email}
             </Typography>
 
             <WalletActions />

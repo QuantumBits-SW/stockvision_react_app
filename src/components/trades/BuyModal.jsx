@@ -3,7 +3,10 @@ import { useStockData } from "../../context/StockProvider";
 import { useSelector } from "react-redux";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
+import { placeOrder } from "@/services/tradeService";
+import { toast } from "react-toastify";
+import tradingSocketService from "@/services/tradingSocketService";
+import { useWallet } from "@/context/walletProvider";
 
 const BuyModal = ({ symbol, isOpen, onClose }) => {
   const userId = useSelector((state) => state.auth.user.uid);
@@ -12,39 +15,54 @@ const BuyModal = ({ symbol, isOpen, onClose }) => {
   const [quantity, setQuantity] = useState(1);
   const [limitPrice, setLimitPrice] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const { wallet } = useWallet();
 
   const handleBuy = async () => {
+    // Check if user has enough balance
+    if (lastPrice * quantity > wallet.balance) {
+      toast.error("Insufficient balance to place order");
+      return;
+    }
+
+    // check if limit price is valid
+    if (orderType === "limit" && limitPrice <= 0) {
+      toast.error("Invalid limit price");
+      return;
+    }
+
     setLoading(true);
-    setError("");
-
-    const order = {
-      symbol,
-      orderType,
-      action: "buy",
-      quantity: Number(quantity),
-      price: orderType === "limit" ? Number(limitPrice) : lastPrice,
-      userId
-    };
-
     try {
       if (orderType === "limit") {
-        // ✅ Store Limit Order in Redis Trading Service
-        await axios.post("http://localhost:5000/api/orders", order);
-        console.log(`Stored limit order for ${symbol} at ${limitPrice} in Redis`);
+        tradingSocketService.send({
+          type: "LIMIT_ORDER",
+          orderType: "BUY",
+          symbol,
+          price: Number(limitPrice),
+          quantity: Number(quantity),
+          userId
+        });
+        console.log(`Sent LIMIT_ORDER for ${symbol} at ${limitPrice} via WebSocket`);
+        toast.info(`Limit order for ${symbol} at $${limitPrice} placed successfully`);
       } else {
-        // ✅ Execute Market Order Immediately
-        await axios.post("http://localhost:8080/api/orders/buy", order);
+        await placeOrder({
+          symbol,
+          orderType: "market",
+          action: "buy",
+          quantity: Number(quantity),
+          price: lastPrice,
+          userId
+        });
+        toast.info(`Placed market order for ${symbol} at ${lastPrice}`);
       }
       onClose();
     } catch (err) {
-      setError("Error placing order. Please try again.");
+      toast.error("Error placing order. Please try again.");
       console.error("Order Placement Error:", err);
     } finally {
       setLoading(false);
     }
   };
-
+  
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="p-6">
@@ -87,8 +105,6 @@ const BuyModal = ({ symbol, isOpen, onClose }) => {
             </>
           )}
         </div>
-
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
         <div className="flex justify-between mt-4">
           <Button

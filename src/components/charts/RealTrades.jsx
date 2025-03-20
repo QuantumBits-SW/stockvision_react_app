@@ -9,7 +9,7 @@ import SellModal from '../trades/SellModal';
 
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-const RealTrades = ({ symbol, mode }) => {
+const RealTrades = ({ symbol, mode, holding }) => {
   const { ohlcHistory, lineData, activeCandle, lastPrice, marketOpen, openPrice } = useStockData();
   const [ohlc, setOhlc] = useState([]);
   const [chartType, setChartType] = useState("line"); // Default to Line Chart
@@ -51,7 +51,7 @@ const RealTrades = ({ symbol, mode }) => {
 
   return (
     loading ? <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 300 }}><CircularProgress /></Box> :
-    <Card sx={{ p: 2, maxWidth: 900, margin: 'auto', position: 'relative' }}>
+    <Card sx={{ p: 2, maxWidth: 900, margin: 'auto', position: 'relative'}}>
       <CardContent>
         {!marketOpen && (
           <Box sx={{
@@ -81,7 +81,7 @@ const RealTrades = ({ symbol, mode }) => {
             >
               Buy
             </Button>
-            {isBuyOpen && <BuyModal symbol={symbol} onClose={() => setIsBuyOpen(false)} />}
+            {isBuyOpen && <BuyModal symbol={symbol} isOpen={isBuyOpen} onClose={() => setIsBuyOpen(false)} />}
           </div>
           }
 
@@ -96,7 +96,7 @@ const RealTrades = ({ symbol, mode }) => {
               >
                 Sell
               </Button>
-              {isBuyOpen && <SellModal symbol={symbol} onClose={() => setIsBuyOpen(false)} />}
+              {isBuyOpen && <SellModal symbol={symbol} isOpen={isBuyOpen} onClose={() => setIsBuyOpen(false)} holding={holding}/>}
             </div>
           }
 

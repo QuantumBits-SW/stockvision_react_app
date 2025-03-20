@@ -27,11 +27,20 @@ export const getPortfolio = async () => {
   }
 }
 
-export const getOrders = async () => {
+export const getExecutedOrders = async () => {
   try {
     return await axiosInstance.get("/orders/history");
   } catch (error) {
     console.log("Failed to fetch orders:", error);
+    throw error;
+  }
+}
+
+export const getWallet = async () => {
+  try {
+    return await axiosInstance.get("/wallet");
+  } catch (error) {
+    console.log("Failed to fetch wallet:", error);
     throw error;
   }
 }

@@ -4,61 +4,93 @@ import { useSelector } from "react-redux";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { sellOrder } from "@/services/tradeService";
+import tradingSocketService from "@/services/tradingSocketService";
+import { toast } from "react-toastify";
 
-const SellModal = ({ symbol, isOpen, onClose }) => {
+const SellModal = ({ symbol, isOpen, onClose, holding }) => {
   const userId = useSelector((state) => state.auth.user.uid);
   const { lastPrice } = useStockData();
   const [orderType, setOrderType] = useState("market");
   const [quantity, setQuantity] = useState(1);
   const [stopPrice, setStopPrice] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [limitPrice, setLimitPrice] = useState("");
 
   const handleSell = async () => {
-    setLoading(true);
-    setError("");
-
-    const order = {
-      symbol,
-      orderType,
-      action: "sell",
-      quantity: Number(quantity),
-      userId
-    };
-
-    if (orderType === "market") {
-      order.price = lastPrice;
-    } else if (orderType === "stop") {
-      order.limit = 0;
-      order.price = Number(stopPrice);
-    } else if (orderType === "oco") {
-      order.limit = Number(limitPrice);
-      order.stop = Number(stopPrice);
+    // checks
+    if (quantity > holding.quantity) {
+      toast.error("You don't have enough shares to sell");
+      return;
     }
 
+    if (quantity <= 0) {
+      toast.error("Quantity must be greater than 0");
+      return;
+    }
+    if (orderType === "limit" && limitPrice <= 0) {
+      toast.error("Limit price must be greater than 0");
+      return;
+    }
+    if (orderType === "stop" && stopPrice <= 0) {
+      toast.error("Stop price must be greater than 0");
+      return;
+    }
+    if (orderType === "oco" && (limitPrice <= 0 || stopPrice <= 0)) {
+      toast.error("Limit and Stop prices must be greater than 0");
+      return;
+    }
+    if (orderType === "oco" && limitPrice <= stopPrice) {
+      toast.error("Limit price must be greater than stop price");
+      return;
+    }
+
+    setLoading(true);
     try {
       if (orderType === "market") {
-        await sellOrder(order);
-      } else {
-        await axios.post("http://localhost:5000/api/orders", {
+        await sellOrder({
           symbol,
-          orderType: "oco",
-          limit, 
-          stop, 
-          quantity, 
-          userId 
+          orderType: "market",
+          action: "sell",
+          quantity: Number(quantity),
+          price: lastPrice,
+          userId
         });
-        console.log(`Stored ${orderType} sell order for ${symbol} in Redis`);
+        console.log(`Placed market sell order for ${symbol} at ${lastPrice}`);
+        toast.info(`Market sell order for ${symbol} placed successfully`);
+      } else if (orderType === "stop") {
+        tradingSocketService.send({
+          type: "STOP_LOSS_ORDER",
+          orderType: "SELL",
+          symbol,
+          stop: Number(stopPrice),
+          quantity: Number(quantity),
+          userId
+        });
+        console.log(`Sent STOP_LOSS_ORDER for ${symbol} at stop ${stopPrice}`);
+        toast.info(`Stop Loss order for ${symbol} at $${stopPrice} placed successfully`);
+      } else if (orderType === "oco") {
+        tradingSocketService.send({
+          type: "OCO_ORDER",
+          orderType: "SELL",
+          symbol,
+          limit: Number(limitPrice),
+          stop: Number(stopPrice),
+          quantity: Number(quantity),
+          userId
+        });
+        console.log(`Sent OCO_ORDER SELL for ${symbol}, limit ${limitPrice}, stop ${stopPrice}`);
+        toast.info(`OCO order for ${symbol} placed successfully`);
       }
+  
       onClose();
     } catch (err) {
-      setError("Error placing sell order. Please try again.");
+      toast.error("Error placing sell order. Please try again.");
       console.error("Sell Order Error:", err);
     } finally {
       setLoading(false);
     }
   };
-
+  
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="p-6">
@@ -87,6 +119,7 @@ const SellModal = ({ symbol, isOpen, onClose }) => {
           <input
             type="number"
             value={quantity}
+            max={holding.quantity}
             onChange={(e) => setQuantity(e.target.value)}
             className="p-2 border rounded"
           />
@@ -135,8 +168,6 @@ const SellModal = ({ symbol, isOpen, onClose }) => {
             </>
           )}
         </div>
-
-        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
         <div className="flex justify-between mt-4">
           <Button
