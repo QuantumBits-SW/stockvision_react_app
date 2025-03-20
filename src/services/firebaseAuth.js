@@ -81,6 +81,7 @@ export const authObserver = () => {
     } else {
       store.dispatch(removeUser());
     }
+    store.dispatch(setLoading(false));
   })
 }
 
