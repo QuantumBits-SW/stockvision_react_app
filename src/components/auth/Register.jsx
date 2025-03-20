@@ -6,7 +6,7 @@ import Groups3OutlinedIcon from '@mui/icons-material/Groups3Outlined';
 import KeyOutlinedIcon from '@mui/icons-material/KeyOutlined';
 import { useState, useMemo, useRef } from 'react';
 import { emailRegex, passwordRegex } from "../../utils/validatorConstants";
-import { Button } from "@mui/material";
+import { Alert, Button } from "@mui/material";
 import { createUser } from "../../services/firebaseAuth";
 
 const Register = () => {
@@ -27,7 +27,10 @@ const Register = () => {
     password: false,
     confirmPassword: false,
     email: false
-  })
+  });
+
+  const [inputErrors, setInputErrors] = useState({});
+  const [generalError, setGeneralError] = useState("");
 
   const isValid = useMemo(()=>(
     validEntryStatus.password && validEntryStatus.confirmPassword && validEntryStatus.email
@@ -88,21 +91,40 @@ const Register = () => {
     e.preventDefault();
     try {
       const res = await createUser(registerData.email, registerData.password)
-      console.log(res)
     } catch (err) {
       console.error("Error during Sign up process:", err);
+
+      if (err.code === "auth/email-already-in-use") {
+        setInputErrors({ email: "Email is already in use. Try logging in!" });
+      } else if (err.code === "auth/invalid-email") {
+        setInputErrors({ email: "Please enter a valid email address." });
+      } else if (err.code === "auth/weak-password") {
+        setInputErrors({ password: "Weak password. Use at least 6 characters." });
+      } else {
+        setGeneralError("Something went wrong. Please try again!");
+      }
     }
   }
  
   return ( 
+
     <div className="flex flex-col justify-center animate-slideInFromRight overflow-hidden animate-slideInFromLeft">
+    {generalError && (
+      <div className="flex justify-center my-2">
+        <Alert severity="error" className="w-full"  onClose={() => setGeneralError("")}>{generalError}</Alert>
+      </div>
+    )}
     <form className="overflow-hidden" onSubmit={handleSubmit}>
         <span className="flex flex-row w-[100%] gap-1">
           <InputField autoComplete="off" label="Name" Icon={PersonPinOutlinedIcon} onChange={onChange} checked={validEntryStatus.firstName}/>
           <InputField autoComplete="off" label="Surname" Icon={Groups3OutlinedIcon} onChange={onChange} checked={validEntryStatus.lastName}/>
         </span>
-        <InputField autoComplete="email" label="Email Address" Icon={MailOutlinedIcon} onChange={onChange} checked={validEntryStatus.email}/>
-        <InputField autoComplete="password" label="Password" Icon={PasswordOutlinedIcon} onChange={onChange} checked={validEntryStatus.password}/>
+        <InputField autoComplete="email" label="Email Address" Icon={MailOutlinedIcon} onChange={onChange}
+         checked={validEntryStatus.email}   error={Boolean(inputErrors.email)}  helperText={inputErrors.email}/>
+        <InputField autoComplete="password" label="Password" Icon={PasswordOutlinedIcon} onChange={onChange} checked={validEntryStatus.password}
+          error={Boolean(inputErrors.password)}
+          helperText={inputErrors.password}
+        />
         <InputField ref={ref} autoComplete="off" label="Confirm Password" Icon={KeyOutlinedIcon} onChange={onChange} checked={validEntryStatus.confirmPassword}/>
         <Button
           type = "submit"

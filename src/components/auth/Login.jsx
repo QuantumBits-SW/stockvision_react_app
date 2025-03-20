@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Alert, Button } from "@mui/material";
 import MailOutlinedIcon from '@mui/icons-material/MailOutlined';
 import PasswordOutlinedIcon from '@mui/icons-material/PasswordOutlined';
 import InputField from "./InputField";
@@ -38,27 +38,40 @@ const Login = ({ setAuthState }) => {
     e.preventDefault();
     try {
       const res = await login(data.email, data.password);
+      console.log(res);
       navigate("/holdings");
-      console.log(res)
     } catch (err) {
       console.error("Error during login process:", err);
-      setError("Login failed, Please check your credentials!");
+
+      if (err.code === "auth/user-not-found") {
+        setError("No user found with this email.");
+      } else if (err.code === "auth/wrong-password") {
+        setError("Incorrect password. Please try again.");
+      } else if(err.code === "auth/invalid-credential") {
+        setError("Invalid Credentials. Please try again!");
+      } else{
+        setError("Login failed. Please try again!");
+      } 
     }
   };
 
   return (
   <div className="flex flex-col justify-center animate-slideInFromRight">
+  {error && (
+        <div className="flex justify-center my-2">
+          <Alert severity="error" className="w-full"  onClose={() => setError("")}>{error}</Alert>
+        </div>
+      )}
     <form onSubmit={handleSubmit}>
         <InputField autoComplete="email" label="Email Address" Icon={MailOutlinedIcon} onChange={onChange} checked={isValid}/>
         <InputField autoComplete="password" label="Password" Icon={PasswordOutlinedIcon} onChange={onChange}/>
-        {error && <p className="text-center text-red-500">{error}</p>}
         <Button className="!block !normal-case !mt-[-10px] !underline !w-fit !text-center" 
         onClick={() => setAuthState({
           login: 0,
           register: 0,
           forgetPass: 1
         })}>
-          reset password
+          Forgot your password?
         </Button>
         <Button
           type="submit"
