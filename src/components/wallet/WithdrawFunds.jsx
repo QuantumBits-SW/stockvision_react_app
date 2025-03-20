@@ -94,7 +94,6 @@ const WithdrawFunds = ({ onClose }) => {
                         options={{
                             style: {
                                 base: {
-                                    fontSize: "16px",
                                     color: "#ffffff",
                                     "::placeholder": { color: "rgba(255,255,255,0.7)" },
                                 },
