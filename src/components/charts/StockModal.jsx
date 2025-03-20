@@ -6,13 +6,14 @@ import HistoricalChart from "./HistoricalChart";
 import RealTrades from "./RealTrades";
 import { StockDataProvider } from "../../context/StockProvider";
 
-const StockModal = ({ open, onClose, symbol, mode="buy" }) => {
+const StockModal = ({ open, onClose, symbol, mode="buy", holding=null }) => {
   const [tabIndex, setTabIndex] = useState(0);
   return (
     <Modal open={open} onClose={onClose} sx={{
       display: "flex",
       alignItems: "center",
-      justifyContent: "center"
+      justifyContent: "center",
+      zIndex: 3
     }}>
       <Box
         sx={{
@@ -38,7 +39,7 @@ const StockModal = ({ open, onClose, symbol, mode="buy" }) => {
           </Tabs>
           <Box mt={2}>
             {tabIndex === 0 && <HistoricalChart symbol={symbol} />}
-            {tabIndex === 1 && <RealTrades symbol={symbol} mode={mode}/>}
+            {tabIndex === 1 && <RealTrades symbol={symbol} mode={mode} holding={holding}/>}
             {tabIndex === 2 && <Prediction symbol={symbol}/>}
           </Box>
         </StockDataProvider>

@@ -117,7 +117,7 @@ const checkMarketStatus = async () => {
       throw new Error("Invalid market status response");
     }
 
-    if (data.session !== null && data.holiday !== null) {
+    if (data.session !== null) {
       return true;
     } else {
       return false;

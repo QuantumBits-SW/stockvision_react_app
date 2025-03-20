@@ -2,10 +2,14 @@ import { useState } from "react";
 import { Button, Stack } from "@mui/material";
 import { motion } from "framer-motion";
 import FundsModal from "./FundsModal";
+import { useWallet } from "../../context/walletProvider";
 
 const WalletActions = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [modalType, setModalType] = useState("withdraw");
+    const { wallet } = useWallet();
+
+    console.log(wallet);
 
     const openModal = (type) => {
         setModalType(type);
@@ -14,6 +18,13 @@ const WalletActions = () => {
 
     return (
         <Stack spacing={2} sx={{ width: "100%", mt: 2 }}>
+            {
+                wallet && (
+                    <p className="ttext-slate-600 text-md">
+                        Wallet Balance: ${wallet.balance.toFixed(2)}
+                    </p>
+                )
+            }
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                     variant="contained"

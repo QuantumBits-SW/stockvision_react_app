@@ -3,6 +3,7 @@ import { openAuth } from "../../store/slices/popperSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import UserProfileDrawer from "../user/UserProfileDrawer";
+import { WalletProvider } from "@/context/walletProvider";
 
 
 const Navbar = () => {
@@ -26,7 +27,7 @@ const Navbar = () => {
         {user ? (
           <>
             <Link to="/stocks">
-              <Button>Equity</Button>
+              <Button>Stocks</Button>
             </Link>
             <Link to="/portfolio">
               <Button>Portfolio</Button>
