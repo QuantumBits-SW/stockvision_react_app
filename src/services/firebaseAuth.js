@@ -92,7 +92,7 @@ export const createUser = async (email, password) => {
       result
     };
   } catch(error) {
-    throw new Error(error);
+    throw error;
   }
 }
 
@@ -104,7 +104,7 @@ export const login = async (email, password) => {
       result
     };
   } catch(error) {
-    throw new Error(error);
+    throw error;
   }
 }
 

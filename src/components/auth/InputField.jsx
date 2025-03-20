@@ -1,7 +1,7 @@
 import { Divider, TextField } from "@mui/material";
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 
-const InputField = ({ label, Icon, autoComplete, onChange, checked, ref }) => {
+const InputField = ({ label, Icon, autoComplete, onChange, checked, ref, error, helperText }) => {
   return (
     <div className="group flex flex-row border-1 w-full border-black/20 rounded-[30px] px-4 gap-2 items-center mb-2 focus-within:border-black/70">
       <Icon className="text-sm text-center text-black/40 group-focus-within:text-black/70"/>
@@ -13,6 +13,8 @@ const InputField = ({ label, Icon, autoComplete, onChange, checked, ref }) => {
         autoComplete={autoComplete}
         onChange={onChange}
         name={label}
+        error={error} 
+        helperText={error ? helperText : ""}
         slotProps={{
           input: {
             className: "!rounded-[30px] text-gray-700",
@@ -40,6 +42,9 @@ const InputField = ({ label, Icon, autoComplete, onChange, checked, ref }) => {
             },
             marginLeft: "-15px",
             fontSize: "14px"
+          },
+          '& .MuiFormHelperText-root': { 
+            marginLeft: 0 
           }
         }}
       />
