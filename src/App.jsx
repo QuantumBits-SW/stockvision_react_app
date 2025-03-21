@@ -12,6 +12,7 @@ import { firebaseAuth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import tradingSocketService from "./services/tradingSocketService";
 import { WalletProvider } from "./context/walletProvider";
+import HomePage from "./components/common/HomePage";
 
 function App() {
 
@@ -66,7 +67,7 @@ function App() {
         <Navbar />
         <Layout/>
         <Routes>
-          <Route path="/" element={<StockDashboard />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/portfolio" element={ <PrivateRoute element={<Portfolio />}/>} />
           <Route path="/stocks" element={ <PrivateRoute element={<StockDashboard />}/>} />
           <Route path="/orders" element={ <PrivateRoute element={<Orders />}/>} />

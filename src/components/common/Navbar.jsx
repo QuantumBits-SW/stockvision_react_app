@@ -12,11 +12,15 @@ const Navbar = () => {
   return (
     <>
       <div className="w-[90vw] mx-auto bg-slate-400/15 mt-[20px] rounded-[5rem] p-[1%] backdrop-blur-xs">
-        <Typography variant="body" sx={{
+        <Typography variant="body" 
+        component = {Link}
+        to = "/"
+        sx={{
           paddingLeft: '20px',
           fontSize: '25px',
-          fontWeight: '500'
-        }}>
+          fontWeight: '500',
+        }}
+         >
           <em>Stock
             <span className="text-blue-500"> 
               Vision

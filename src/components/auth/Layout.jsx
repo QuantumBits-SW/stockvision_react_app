@@ -9,6 +9,7 @@ import ResetPass from "./ResetPass";
 import { useState } from "react";
 import { Google, FacebookRounded } from "@mui/icons-material";
 import { loginWithProvider } from "../../services/firebaseAuth";
+import { useNavigate } from "react-router-dom";
 
 const Layout = () => {
   const authPopper = useSelector((state) => state.popper.authPopper);
@@ -19,9 +20,20 @@ const Layout = () => {
   }
   const [authState, setAuthState] = useState(initialState)
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const resetState = () => {
     setAuthState(initialState)
+  };
+
+  const loginwithGoogleFBProvider = async(provider)=>
+  {
+    try {
+      await loginWithProvider(provider);
+      navigate("/stocks");
+    } catch (error) {
+      console.log("Error while login with provider : ", error);
+    }
   }
 
   return (
@@ -72,15 +84,10 @@ const Layout = () => {
               </div>
             </div>
             <div className="flex gap-4 justify-center mt-2">
-              <IconButton className="border border-gray-300 rounded-lg p-3" onClick={()=>loginWithProvider('google')}>
+              <IconButton className="border border-gray-300 rounded-lg p-3" onClick={() => {loginwithGoogleFBProvider('google')}}>
                 <Google className="text-gray-600" />
               </IconButton>
-              <IconButton className="border border-gray-300 rounded-lg p-3" onClick={()=>{
-                loginWithProvider('fb')
-                .then((result)=>{
-                  console.log(result)
-                }).catch((error)=>console.log(error.message))
-                }}>
+              <IconButton className="border border-gray-300 rounded-lg p-3" onClick={() => {loginwithGoogleFBProvider('fb')}}>
                 <FacebookRounded className="text-gray-600 !text-[1.5rem]" />
               </IconButton>
             </div>

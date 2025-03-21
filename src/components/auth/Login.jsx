@@ -39,7 +39,7 @@ const Login = ({ setAuthState }) => {
     try {
       const res = await login(data.email, data.password);
       console.log(res);
-      navigate("/holdings");
+      navigate("/stocks");
     } catch (err) {
       console.error("Error during login process:", err);
 
