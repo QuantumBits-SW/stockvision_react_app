@@ -90,7 +90,8 @@ const Register = () => {
   {
     e.preventDefault();
     try {
-      const res = await createUser(registerData.email, registerData.password)
+      const res = await createUser(registerData.email, registerData.password);
+      navigate("/stocks");
     } catch (err) {
       console.error("Error during Sign up process:", err);
 
