@@ -23,6 +23,24 @@ const PendingOrdersTab = () => {
 
   if (pendingOrders.length === 0) return <p className="text-gray-500">No pending orders.</p>;
 
+  const mutatePendingOrders = () => {
+    tradingSocketService.sendGetOrders(userId);
+    tradingSocketService.addListener((data) => {
+      if (data.type === "USER_ORDERS") {
+        setPendingOrders(data.orders);
+      }
+    });
+  }
+
+  const cancelOrder = (orderId) => {
+    tradingSocketService.sendCancelOrder(orderId, userId);
+    tradingSocketService.addListener((data) => {
+      if (data.type === "ORDER_CANCELLED") {
+        mutatePendingOrders();
+      }
+    });
+  }
+
   return (
     <Table>
       <TableHeader>
@@ -46,7 +64,7 @@ const PendingOrdersTab = () => {
                 variant="contained"
                 color="secondary"
                 size="small"
-                onClick={() => tradingSocketService.sendCancelOrder(order.orderId, userId)}
+                onClick={() => cancelOrder(order.orderId)}
               >
                 Cancel
               </Button>

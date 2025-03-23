@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { sellOrder } from "@/services/tradeService";
 import tradingSocketService from "@/services/tradingSocketService";
 import { toast } from "react-toastify";
+import { useWallet } from "@/context/walletProvider";
 
 const SellModal = ({ symbol, isOpen, onClose, holding }) => {
   const userId = useSelector((state) => state.auth.user.uid);
@@ -15,6 +16,7 @@ const SellModal = ({ symbol, isOpen, onClose, holding }) => {
   const [stopPrice, setStopPrice] = useState("");
   const [loading, setLoading] = useState(false);
   const [limitPrice, setLimitPrice] = useState("");
+  const { mutateWallet, mutateTransactions } = useWallet();
 
   const handleSell = async () => {
     // checks
@@ -55,6 +57,8 @@ const SellModal = ({ symbol, isOpen, onClose, holding }) => {
           price: lastPrice,
           userId
         });
+        mutateWallet();
+        mutateTransactions();
         console.log(`Placed market sell order for ${symbol} at ${lastPrice}`);
         toast.info(`Market sell order for ${symbol} placed successfully`);
       } else if (orderType === "stop") {

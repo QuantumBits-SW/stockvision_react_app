@@ -3,6 +3,7 @@ import { useState } from "react";
 import axiosInstance from "../../utils/interceptors";
 import { Card, TextField, Button, Typography, CircularProgress, Alert } from "@mui/material";
 import { motion } from "framer-motion";
+import { useWallet } from "../../context/walletProvider";
 
 const DepositFunds = ({ onClose }) => {
   const stripe = useStripe();

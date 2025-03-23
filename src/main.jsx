@@ -8,6 +8,7 @@ import { setupInterceptor } from './utils/interceptors.js';
 import { authObserver } from './services/firebaseAuth.js';
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { WalletProvider } from "./context/walletProvider";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -18,7 +19,9 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
       <Elements stripe={stripePromise}>
-        <App />
+        <WalletProvider>
+          <App />
+        </WalletProvider>
       </Elements>
     </Provider>
   </StrictMode>

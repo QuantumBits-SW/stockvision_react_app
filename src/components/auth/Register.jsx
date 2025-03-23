@@ -121,12 +121,39 @@ const Register = () => {
           <InputField autoComplete="off" label="Surname" Icon={Groups3OutlinedIcon} onChange={onChange} checked={validEntryStatus.lastName}/>
         </span>
         <InputField autoComplete="email" label="Email Address" Icon={MailOutlinedIcon} onChange={onChange}
-         checked={validEntryStatus.email}   error={Boolean(inputErrors.email)}  helperText={inputErrors.email}/>
+         checked={validEntryStatus.email}   error={Boolean(inputErrors.email)}  helperText={inputErrors.email}
+          toolTip tooltipData={
+            {
+              title: "Enter a valid email address",
+              tips: ["format: abc@xyz.com"]
+            }
+          }
+         />
         <InputField autoComplete="password" label="Password" Icon={PasswordOutlinedIcon} onChange={onChange} checked={validEntryStatus.password}
           error={Boolean(inputErrors.password)}
           helperText={inputErrors.password}
+          toolTip tooltipData={
+            {
+              title: "Should contain at least:",
+              tips: [
+                "8 characters",
+                "1 uppercase letter",
+                "1 lowercase letter",
+                "1 number",
+                "1 special character"
+              ]
+            }
+          }
         />
-        <InputField ref={ref} autoComplete="off" label="Confirm Password" Icon={KeyOutlinedIcon} onChange={onChange} checked={validEntryStatus.confirmPassword}/>
+        <InputField ref={ref} autoComplete="off" label="Confirm Password" Icon={KeyOutlinedIcon} onChange={onChange} 
+          checked={validEntryStatus.confirmPassword}
+          toolTip tooltipData={
+            {
+              title: "Exactly same as password",
+              tips: []
+            }
+          }
+          />
         <Button
           type = "submit"
           variant="contained"

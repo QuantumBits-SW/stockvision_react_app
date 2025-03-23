@@ -5,6 +5,7 @@ import { logout } from "../../services/firebaseAuth";
 import { useNavigate } from "react-router-dom";
 import WalletActions from "../wallet/WalletActions";
 import { useSelector } from "react-redux";
+import Transactions from "../wallet/Transactions";
 
 const UserProfileDrawer = () => {
   const { user } = useSelector((state) => state.auth);
@@ -36,7 +37,7 @@ const UserProfileDrawer = () => {
         onClose={closeProfileDrawer}
         sx={{
           "& .MuiDrawer-paper": {
-            width: "350px",
+            width: "fit-content",
             padding: "24px",
             display: "flex",
             flexDirection: "column",
@@ -66,6 +67,13 @@ const UserProfileDrawer = () => {
             </Typography>
 
             <WalletActions />
+
+            <div style={{ marginTop: "3em" }}>
+              <Typography className="text-slate-600 text-md">
+                Recent Transactions
+              </Typography>
+              <Transactions />
+            </div>
           </Box>
         ) : (
           <Typography>No user information available.</Typography>
