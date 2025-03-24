@@ -44,3 +44,12 @@ export const getWallet = async () => {
     throw error;
   }
 }
+
+export const getUserTransactions = async (userId) => {
+  try {
+    return await axiosInstance.get(`/transactions/user/${userId}`);
+  } catch (error) {
+    console.log("Failed to fetch transactions:", error);
+    throw error;
+  }
+}

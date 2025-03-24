@@ -15,7 +15,7 @@ const BuyModal = ({ symbol, isOpen, onClose }) => {
   const [quantity, setQuantity] = useState(1);
   const [limitPrice, setLimitPrice] = useState("");
   const [loading, setLoading] = useState(false);
-  const { wallet } = useWallet();
+  const { wallet, mutateWallet, mutateTransactions } = useWallet();
 
   const handleBuy = async () => {
     // Check if user has enough balance
@@ -52,6 +52,8 @@ const BuyModal = ({ symbol, isOpen, onClose }) => {
           price: lastPrice,
           userId
         });
+        mutateWallet();
+        mutateTransactions();
         toast.info(`Placed market order for ${symbol} at ${lastPrice}`);
       }
       onClose();

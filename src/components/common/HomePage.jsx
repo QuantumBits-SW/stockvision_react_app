@@ -19,7 +19,7 @@ const HomePage = () => {
 
   return (
     <div>
-        <div className="w-[90vw] mx-auto bg-white">
+        <div className="w-[90vw] mx-auto bg-white mt-12">
         <section className="py-24 text-center text-white rounded-[5rem]" style={{ background: "oklch(0.623 0.214 259.815)" }}>
             <Container maxWidth="lg">
             <Typography variant="h2" className="text-5xl font-extrabold mb-4">
@@ -31,6 +31,7 @@ const HomePage = () => {
             <Button
                 variant="contained"
                 sx={{
+                mt: 2,
                 backgroundColor: "black",
                 color: "white",
                 fontSize: "1.2rem",

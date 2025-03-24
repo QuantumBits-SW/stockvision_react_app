@@ -9,8 +9,6 @@ const WalletActions = () => {
     const [modalType, setModalType] = useState("withdraw");
     const { wallet } = useWallet();
 
-    console.log(wallet);
-
     const openModal = (type) => {
         setModalType(type);
         setModalOpen(true);
@@ -21,7 +19,7 @@ const WalletActions = () => {
             {
                 wallet && (
                     <p className="ttext-slate-600 text-md">
-                        Wallet Balance: ${wallet.balance.toFixed(2)}
+                        Wallet Balance: ${wallet?.balance?.toFixed(2)}
                     </p>
                 )
             }

@@ -11,10 +11,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import { firebaseAuth } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import tradingSocketService from "./services/tradingSocketService";
-import { WalletProvider } from "./context/walletProvider";
 import HomePage from "./components/common/HomePage";
+import { useWallet } from "./context/walletProvider";
 
 function App() {
+  const { mutateWallet, mutateTransactions } = useWallet();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
@@ -24,6 +25,8 @@ function App() {
         const handleSocketMessage = (data) => {
           switch (data.type) {
             case 'ORDER_EXECUTED':
+              mutateWallet();
+              mutateTransactions();
               toast.success(`Order Executed: ${data.symbol} at $${data.priceExecuted}`);
               break;
             case 'CANCEL_CONFIRMATION':
@@ -62,29 +65,27 @@ function App() {
 
   return (
     <>
-    <WalletProvider>
-      <Router>
-        <Navbar />
-        <Layout/>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/portfolio" element={ <PrivateRoute element={<Portfolio />}/>} />
-          <Route path="/stocks" element={ <PrivateRoute element={<StockDashboard />}/>} />
-          <Route path="/orders" element={ <PrivateRoute element={<Orders />}/>} />
-        </Routes>
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
+    <Router>
+      <Navbar />
+      <Layout/>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/portfolio" element={ <PrivateRoute element={<Portfolio />}/>} />
+        <Route path="/stocks" element={ <PrivateRoute element={<StockDashboard />}/>} />
+        <Route path="/orders" element={ <PrivateRoute element={<Orders />}/>} />
+      </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       </Router>
-    </WalletProvider>
     </>
   );
 }

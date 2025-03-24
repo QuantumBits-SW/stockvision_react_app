@@ -63,8 +63,26 @@ const Login = ({ setAuthState }) => {
         </div>
       )}
     <form onSubmit={handleSubmit}>
-        <InputField autoComplete="email" label="Email Address" Icon={MailOutlinedIcon} onChange={onChange} checked={isValid}/>
-        <InputField autoComplete="password" label="Password" Icon={PasswordOutlinedIcon} onChange={onChange}/>
+        <InputField autoComplete="email" label="Email Address" Icon={MailOutlinedIcon} onChange={onChange} checked={isValid}
+        toolTip tooltipData={
+          {
+            title: "Enter a valid email address",
+            tips: ["format: abc@xyz.com"]
+          }
+        }
+        />
+        <InputField autoComplete="password" label="Password" Icon={PasswordOutlinedIcon} onChange={onChange} toolTip tooltipData={
+          {
+            title: "Should contain at least:",
+            tips: [
+            "8 characters",
+            "one number",
+            "one uppercase letter",
+            "one lowercase letter",
+            "one special character"
+            ]
+          }
+        }/>
         <Button className="!block !normal-case !mt-[-10px] !underline !w-fit !text-center" 
         onClick={() => setAuthState({
           login: 0,

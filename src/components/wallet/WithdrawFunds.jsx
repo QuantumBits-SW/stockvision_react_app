@@ -3,6 +3,7 @@ import { useState } from "react";
 import axiosInstance from "../../utils/interceptors";
 import { Card, TextField, Button, Typography, CircularProgress, Alert, Box } from "@mui/material";
 import { motion } from "framer-motion";
+import { useWallet } from "../../context/walletProvider";
 
 const WithdrawFunds = ({ onClose }) => {
     const stripe = useStripe();
@@ -10,6 +11,7 @@ const WithdrawFunds = ({ onClose }) => {
     const [amount, setAmount] = useState("");
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
+    const { mutateWallet, mutateTransactions } = useWallet();
 
     const handleWithdraw = async () => {
         if (!stripe || !elements) {
@@ -44,6 +46,8 @@ const WithdrawFunds = ({ onClose }) => {
             if (response.data.message) {
                 setMessage(response.data.message);
                 onClose();
+                mutateWallet();
+                mutateTransactions();
             } else {
                 setMessage("Error: " + response.data.error);
             }
